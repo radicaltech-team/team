@@ -16,6 +16,8 @@
             --highlight-secondary: #C0C0C0;
             --text: #ffffff;
             --text-secondary: #e6e6e6;
+            --glass-bg: rgba(26, 26, 46, 0.6);
+            --glass-border: rgba(255, 215, 0, 0.2);
         }
        
         /* استایل‌های پایه */
@@ -62,14 +64,8 @@
         }
 
         @keyframes twinkle {
-            0%, 100% {
-                opacity: 0.2;
-                transform: scale(0.5);
-            }
-            50% {
-                opacity: 1;
-                transform: scale(1);
-            }
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
         }
 
         .shooting-stars {
@@ -91,21 +87,10 @@
         }
 
         @keyframes shooting {
-            0% {
-                transform: translateX(0) translateY(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            20% {
-                transform: translateX(-100px) translateY(100px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateX(-100px) translateY(100px);
-                opacity: 0;
-            }
+            0% { transform: translateX(0) translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            20% { transform: translateX(-100px) translateY(100px); opacity: 0; }
+            100% { transform: translateX(-100px) translateY(100px); opacity: 0; }
         }
 
         .galaxy {
@@ -441,66 +426,227 @@
             box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
         }
        
-        /* بخش خدمات */
+        /* ===== بخش خدمات با جلوه‌های ویژه ===== */
         .services {
             padding: 100px 0;
-        }
-       
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-       
-        .service-card {
-            background: rgba(26, 26, 46, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 215, 0, 0.3);
             position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
         }
-       
-        .service-card::before {
+
+        .services::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, transparent, rgba(255, 215, 0, 0.1), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,215,0,0.03) 0%, transparent 70%);
+            pointer-events: none;
         }
        
-        .service-card:hover::before {
-            transform: translateX(100%);
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 35px;
+            margin-top: 50px;
         }
-       
+
+        /* کارت خدمات شیشه‌ای با افکت */
+        .service-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 35px 30px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 1px solid var(--glass-border);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+        }
+
+        /* خط نورانی بالای کارت */
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: calc(100% + 2px);
+            height: 4px;
+            background: linear-gradient(90deg, transparent, var(--highlight), var(--highlight-secondary), transparent);
+            background-size: 300% 100%;
+            animation: shimmerBorder 4s ease-in-out infinite;
+            border-radius: 24px 24px 0 0;
+        }
+
+        @keyframes shimmerBorder {
+            0% { background-position: -300% 0; }
+            100% { background-position: 300% 0; }
+        }
+
+        /* هاله طلایی در هاور */
+        .service-card::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(255,215,0,0.06) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            transition: all 0.6s ease;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .service-card:hover::after {
+            width: 600px;
+            height: 600px;
+        }
+
         .service-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-12px) scale(1.01);
             border-color: var(--highlight);
+            box-shadow: 0 20px 50px rgba(255, 215, 0, 0.15), 0 0 30px rgba(255, 215, 0, 0.05);
         }
-       
+
+        /* آیکون با افکت چرخش و درخشش */
         .service-icon {
-            font-size: 3rem;
+            font-size: 3.2rem;
             margin-bottom: 20px;
             color: var(--highlight);
+            display: inline-block;
+            transition: all 0.5s ease;
+            position: relative;
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
         }
-       
+
+        .service-card:hover .service-icon {
+            transform: rotateY(180deg) scale(1.1);
+            text-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        }
+
         .service-title {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.6rem;
+            margin-bottom: 18px;
             color: var(--text);
+            position: relative;
+            display: inline-block;
         }
-       
+
+        .service-title::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            right: 0;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(to left, var(--highlight), transparent);
+            transition: width 0.4s ease;
+        }
+
+        .service-card:hover .service-title::after {
+            width: 100%;
+        }
+
         .service-desc {
             color: var(--text-secondary);
+            direction: rtl;
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .service-desc strong {
+            color: var(--highlight);
+            font-weight: 600;
+        }
+
+        .service-desc ul {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0;
+        }
+
+        .service-desc li {
+            margin-bottom: 6px;
+            font-size: 0.92rem;
+            position: relative;
+            padding-right: 22px;
+        }
+
+        .service-desc li::before {
+            content: '✦';
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: var(--highlight);
+            font-size: 0.8rem;
+        }
+
+        .service-desc .highlight {
+            color: var(--highlight);
+            font-weight: 500;
+        }
+
+        .price-tag {
+            display: inline-block;
+            background: linear-gradient(145deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05));
+            border: 1px solid var(--highlight);
+            border-radius: 30px;
+            padding: 5px 22px;
+            margin-top: 6px;
+            font-weight: 500;
+            color: var(--highlight);
+            font-size: 0.9rem;
+            backdrop-filter: blur(4px);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .price-tag {
+            background: var(--highlight);
+            color: var(--primary);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .divider-glow {
+            border: none;
+            height: 1px;
+            background: linear-gradient(to left, transparent, var(--highlight), transparent);
+            margin: 16px 0;
+            opacity: 0.3;
+        }
+
+        .note-small {
+            font-size: 0.82rem;
+            color: var(--highlight-secondary);
+            margin-top: 12px;
+            opacity: 0.7;
+            font-style: italic;
+        }
+
+        /* تگ ویژه برای برخی کارت‌ها */
+        .service-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(145deg, var(--highlight), #e6b800);
+            color: var(--primary);
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+            z-index: 2;
+            animation: pulseBadge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseBadge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
        
         /* بخش تماس */
@@ -728,6 +874,11 @@
             .hero h1 {
                 font-size: 2.5rem;
             }
+
+            .services-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 25px;
+            }
         }
        
         @media (max-width: 768px) {
@@ -745,6 +896,14 @@
            
             .section-title {
                 font-size: 2rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-card {
+                padding: 28px 20px 24px;
             }
         }
     </style>
@@ -795,7 +954,7 @@
             <div class="about-content">
                 <div class="about-text fade-in">
                     <h3>داستان ما</h3>
-                    <p>رادیکال‌تک در سال 1402 با چشم‌اندازی روشن برای تغییر دنیای دیجیتال تأسیس شد. ما معتقدیم که فناوری باید در خدمت خلاقیت و نوآوری باشد تا تجربه‌های بهتری برای کاربران خلق کند.</p>
+                    <p>رادیکال‌تک در سال ۱۴۰۲ با چشم‌اندازی روشن برای تغییر دنیای دیجیتال تأسیس شد. ما معتقدیم که فناوری باید در خدمت خلاقیت و نوآوری باشد تا تجربه‌های بهتری برای کاربران خلق کند.</p>
                     <p>تیم ما متشکل از توسعه‌دهندگان، طراحان و استراتژیست‌های متعهدی است که با همکاری یکدیگر، پروژه‌های پیچیده را به موفقیت می‌رسانند.</p>
                     <p>ما به کیفیت، نوآوری و رضایت مشتری متعهد هستیم و در هر پروژه‌ای، استانداردهای بالایی را رعایت می‌کنیم.</p>
                 </div>
@@ -817,7 +976,7 @@
                     </div>
                     <h3 class="member-name">امیرمحمد فلاح</h3>
                     <p class="member-role">مدیر فنی و بنیان‌گذار</p>
-                    <p class="member-desc">مدیر قرارداد ها  ، تسلط بر پایتون  ، بک اند ( جنگو ) , فرانت کار  ، وردپرس و فلاتر  ، مدیریت و رهبری ایده های تیم</p>
+                    <p class="member-desc">مدیر قراردادها، تسلط بر پایتون، بک‌اند (جنگو)، فرانت‌کار، وردپرس و فلاتر، مدیریت و رهبری ایده‌های تیم</p>
                     <div class="social-links">
                         <a href="https://www.linkedin.com/in/amfprogrammer?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin"></i></a>
                         <a href="mailto:radicaltech.org@gmail.com"><i class="fa-solid fa-envelope"></i></a>
@@ -831,7 +990,7 @@
                     </div>
                     <h3 class="member-name">شایان پور ابراهیم</h3>
                     <p class="member-role">مدیر اجرایی و بنیان‌گذار</p>
-                    <p class="member-desc">مدیر فروش و بازار یابی ، تسلط بر جاوا اسکریپت ، فرانت کار ، next.js ، react.js و وردپرس ، مدیریت و رهبری ایده های تیم</p>
+                    <p class="member-desc">مدیر فروش و بازاریابی، تسلط بر جاوااسکریپت، فرانت‌کار، Next.js، React.js و وردپرس، مدیریت و رهبری ایده‌های تیم</p>
                     <div class="social-links">
                         <a href="https://www.linkedin.com/in/shayan-pourebrahim?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin"></i></a>
                         <a href="tel:98213822923"><i class="fas fa-phone"></i></a>
@@ -848,54 +1007,142 @@
                     <p class="member-role">کارشناس دیجیتال مارکتینگ و سئو</p>
                     <p class="member-desc">تسلط بر دیجیتال مارکتینگ و سئو با تمرکز بر رشد ارگانیک و بهینه‌سازی حضور آنلاین برندها. با ترکیب تحلیل داده، استراتژی محتوا و سئو فنی</p>
                     <div class="social-links">
-                        <a href="https://t.me/parishan8370"><i class="fa-brands fa-telegram"></i></a>
-                        <a href="tel:989339638370"><i class="fas fa-phone"></i></a>
+                        <a href="#"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="#"><i class="fas fa-phone"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- بخش خدمات -->
+    <!-- ===== بخش خدمات با جلوه‌های ویژه ===== -->
     <section class="services" id="services">
         <div class="container">
-            <h2 class="section-title fade-in">خدمات ما</h2>
+            <h2 class="section-title fade-in">خدمات رادیکال‌تک</h2>
             <div class="services-grid">
+
+                <!-- 1. طراحی سایت -->
                 <div class="service-card fade-in">
+                    <div class="service-badge">پرفروش</div>
                     <div class="service-icon">
                         <i class="fas fa-code"></i>
                     </div>
-                    <h3 class="service-title">توسعه وب</h3>
-                    <p class="service-desc">توسعه وب‌سایت‌های مدرن و واکنش‌گرا با استفاده از جدیدترین تکنولوژی‌ها و فریم‌ورک‌ها </p>
-                    <a href="https://botikkala.ir/" style="margin-top: 9%;" class="cta-button fade-in active">برای دیدن نمونه کار ما کلیک کنید!</a>
-                    <a href="https://radicaltechteam.github.io/website_design/packages.html" style="margin-top: 4%;" class="cta-button fade-in active">برای دیدن پکیج ها کلیک کنید!</a>
+                    <h3 class="service-title">طراحی سایت</h3>
+                    <div class="service-desc">
+                        <p><strong>طراحی سایت شرکتی</strong> (معرفی شرکت، برند، خدمات و آموزش و...)</p>
+                        <ul>
+                            <li>هاست یک ماهه رایگان</li>
+                            <li>دامنه یکساله رایگان</li>
+                            <li>۲ ماه پشتیبانی فنی سایت رایگان</li>
+                        </ul>
+                        <hr class="divider-glow">
+                        <p><strong>طراحی سایت فروشگاهی</strong> (فروشگاه‌ها با فروش محصولات و خدمات و...)</p>
+                        <ul>
+                            <li>اضافه کردن ۳۰ محصول رایگان</li>
+                            <li>دامنه یکساله رایگان</li>
+                            <li>۲ ماه پشتیبانی فنی سایت رایگان</li>
+                        </ul>
+                        
+                    </div>
                 </div>
-               
+                
+                
+                <!-- 7. اجاره سایت -->
+                <div class="service-card fade-in">
+                    <div class="service-badge">مقرون‌به‌صرفه</div>
+                    <div class="service-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <h3 class="service-title">اجاره سایت</h3>
+                    <div class="service-desc">
+                        <p><strong>اجاره سایت شرکتی</strong> (معرفی شرکت، برند، خدمات و آموزش و...)</p>
+                        <ul>
+                            <li>پشتیبانی فنی سایت رایگان</li>
+                        </ul>
+                        <hr class="divider-glow">
+                        <p><strong>اجاره سایت فروشگاهی</strong> (فروشگاه‌ها با فروش محصولات و خدمات و...)</p>
+                        <ul>
+                            <li>پشتیبانی فنی سایت رایگان</li>
+                        </ul>
+                        <hr class="divider-glow">
+                        <p><strong>بازه زمانی اجاره سایت</strong></p>
+                        <ul>
+                            <li>سه ماهه</li>
+                            <li>چهار ماهه</li>
+                            <li>شش ماهه</li>
+                            <li>یکساله</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 3. ایده تا محصول -->
+                <div class="service-card fade-in">
+                    <div class="service-badge">رایگان</div>
+                    <div class="service-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="service-title">از ایده تا محصول</h3>
+                    <div class="service-desc">
+                        <p><span class="highlight">★ به‌طور رایگان</span></p>
+                        <ul>
+                            <li>با رادیکال تک ایده های خود را به واقعیت تبدیل کنید</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 4. پروپوزال و پایان‌نامه -->
                 <div class="service-card fade-in">
                     <div class="service-icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-file-alt"></i>
                     </div>
-                    <h3 class="service-title">اجاره سایت فوق حرفه ای</h3>
-                    <p class="service-desc">استراتژی‌های بازاریابی دیجیتال برای افزایش حضور برند شما در فضای آنلاین</p>
-                    <a href="https://botikkala.ir/" style="margin-top: 14%;" class="cta-button fade-in active">برای دیدن نمونه سایت کرایه ای ما کلیک کنید!</a>
-                    <a href="https://radicaltechteam.github.io/botikkala/package.html" style="margin-top: 4%;" class="cta-button fade-in active">برای دیدن پکیج ها کلیک کنید!</a>
+                    <h3 class="service-title">پروپوزال و پایان‌نامه</h3>
+                        <ul>
+                            <li>طراحی سایت وردپرسی</li>
+                            <li>طراحی سایت با برنامه نویسی</li>
+                        </ul>
                 </div>
-               
+
+                <!-- 5. ادمین و مدیریت -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-user-cog"></i>
+                    </div>
+                    <h3 class="service-title">ادمین و مدیریت سایت</h3>
+                    <div class="service-desc">
+                        <ul>
+                            <li>سه ماهه</li>
+                            <li>شش ماهه</li>
+                            <li>یکساله</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- 6. پشتیبانی فنی -->
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 class="service-title">پشتیبانی فنی (ظاهر و عملکرد)</h3>
+                    <ul>
+                            <li>سه ماهه</li>
+                            <li>شش ماهه</li>
+                            <li>یکساله</li>
+                        </ul>
+                </div>
+                <!-- 2. بهینه‌سازی -->
                 <div class="service-card fade-in">
                     <div class="service-icon">
                         <i class="fas fa-search"></i>
                     </div>
-                    <h3 class="service-title">سئو و بهینه‌سازی</h3>
-                    <p class="service-desc">بهینه‌سازی وب‌سایت برای موتورهای جستجو و افزایش رتبه در نتایج گوگل</p>
-                </div>
-               
-                <div class="service-card fade-in">
-                    <div class="service-icon">
-                        <i class="fas fa-cloud"></i>
+                    <h3 class="service-title">پکیج‌های بهینه‌سازی</h3>
+                    <div class="service-desc">
+                        <ul>
+                            <li>افزایش سرعت سایت‌های وردپرسی</li>
+                            <li>بهینه‌سازی کلی ظاهر و عملکرد سایت</li>
+                        </ul>
                     </div>
-                    <h3 class="service-title">مشاوره فناوری</h3>
-                    <p class="service-desc">مشاوره تخصصی در زمینه راه‌حل‌های فناوری و استراتژی‌های دیجیتال برای کسب‌وکارها</p>
                 </div>
+                
             </div>
         </div>
     </section>
@@ -907,71 +1154,52 @@
             <div class="contact-content">
                 <div class="contact-info fade-in">
                     <div class="info-item">
-  <div class="info-icon">
-    <i class="fa-brands fa-instagram"></i>
-  </div>
-  <div class="info-text">
-    <h3>اینستاگرام</h3>
-    <a href="https://www.instagram.com/radicaltech_team?igsh=MzRlODBiNWFlZA==" 
-       style="color:rgb(255, 255, 255); text-decoration:none;">
-       radicaltech_team
-    </a>
-  </div>
-</div>
-
+                        <div class="info-icon">
+                            <i class="fa-brands fa-instagram"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>اینستاگرام</h3>
+                            <a href="https://www.instagram.com/radicaltech_team?igsh=MzRlODBiNWFlZA==" style="color:rgb(255, 255, 255); text-decoration:none;">radicaltech_team</a>
+                        </div>
+                    </div>
                    
                     <div class="info-item">
-  <div class="info-icon">
-    <i class="fa-brands fa-linkedin"></i>
-  </div>
-  <div class="info-text">
-    <h3>لینکدین</h3>
-    <a href="https://www.linkedin.com/company/radicaltech/" 
-       style="color:rgb(255, 255, 255); text-decoration:none;">
-       radicaltech
-    </a>
-  </div>
-</div>
-
+                        <div class="info-icon">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>لینکدین</h3>
+                            <a href="https://www.linkedin.com/company/radicaltech/" style="color:rgb(255, 255, 255); text-decoration:none;">radicaltech</a>
+                        </div>
+                    </div>
 
                     <div class="info-item">
-  <div class="info-icon">
-    <i class="fa-brands fa-github"></i>
-  </div>
-  <div class="info-text">
-    <h3>گیت هاب</h3>
-    <a href="https://github.com/radicaltechteam" 
-       style="color:rgb(255, 255, 255); text-decoration:none;">
-       radicaltechteam
-    </a>
-  </div>
-</div>
-
+                        <div class="info-icon">
+                            <i class="fa-brands fa-github"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>گیت هاب</h3>
+                            <a href="https://github.com/radicaltechteam" style="color:rgb(255, 255, 255); text-decoration:none;">radicaltechteam</a>
+                        </div>
+                    </div>
                    
                     <div class="info-item">
-  <div class="info-icon">
-    <i class="fa-brands fa-telegram"></i>
-  </div>
-  <div class="info-text">
-    <h3>تلگرام</h3>
-    <a href="https://t.me/Radicaltech_team" 
-       style="color:rgb(255, 255, 255); text-decoration:none;">
-       Radicaltech_team
-    </a>
-  </div>
-</div>
-
+                        <div class="info-icon">
+                            <i class="fa-brands fa-telegram"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>تلگرام</h3>
+                            <a href="https://t.me/Radicaltech_team" style="color:rgb(255, 255, 255); text-decoration:none;">Radicaltech_team</a>
+                        </div>
+                    </div>
                    
                     <div class="info-item">
                         <div class="info-icon">
                             <i class="fas fa-phone"></i>
                         </div>
                         <div class="info-text">
-                            <h3>تلفن ، SMS ، واتساپ</h3>
-                            <a href="tel:989213822923" 
-   style="color:rgb(255, 255, 255); text-decoration:none;">
-   09213822923
-</a>
+                            <h3>تلفن، SMS، واتساپ</h3>
+                            <a href="tel:989213822923" style="color:rgb(255, 255, 255); text-decoration:none;">۰۹۲۱۳۸۲۲۹۲۳</a>
                         </div>
                     </div>
                 </div>
@@ -993,19 +1221,14 @@
                         <button type="submit" class="submit-btn">ارسال پیام</button>
                     </form>
                     <div class="info-item" style="margin-top: 17%;">
-  <div class="info-icon">
-    <i class="fa-solid fa-envelope"></i>
-  </div>
-  <div class="info-text">
-    <h3>ایمیل</h3>
-    <a href="mailto:radicaltech.org@gmail.com" 
-       style="color:rgb(255, 255, 255); text-decoration:none;">
-       radicaltech.org@gmail.com
-    </a>
-  </div>
-</div>
-
-                    
+                        <div class="info-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                        </div>
+                        <div class="info-text">
+                            <h3>ایمیل</h3>
+                            <a href="mailto:radicaltech.org@gmail.com" style="color:rgb(255, 255, 255); text-decoration:none;">radicaltech.org@gmail.com</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1038,11 +1261,10 @@
                     <div>
                         <h3>خدمات</h3>
                         <ul>
-                            <li><a href="https://radicaltechteam.github.io/website_design/packages.html">توسعه وب</a></li>
-                            <li><a href="https://radicaltechteam.github.io/botikkala/package.html">اجاره سایت فوق حرفه ای</a></li>
-                            <li><a href="#services">دیجیتال مارکتینگ</a></li>
-                            <li><a href="#services">سئو</a></li>
-                            <li><a href="#services">مشاوره فناوری</a></li>
+                            <li><a href="#services">طراحی سایت</a></li>
+                            <li><a href="#services">بهینه‌سازی سایت</a></li>
+                            <li><a href="#services">اجاره سایت</a></li>
+                            <li><a href="#services">پشتیبانی فنی</a></li>
                         </ul>
                     </div>
                    
